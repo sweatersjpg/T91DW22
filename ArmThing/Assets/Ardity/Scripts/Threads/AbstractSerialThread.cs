@@ -188,6 +188,9 @@ public abstract class AbstractSerialThread
         serialPort = new SerialPort(portName, baudRate);
         serialPort.ReadTimeout = readTimeout;
         serialPort.WriteTimeout = writeTimeout;
+
+        serialPort.DtrEnable = true;
+        serialPort.RtsEnable = true;
         serialPort.Open();
 
         if (enqueueStatusMessages)
