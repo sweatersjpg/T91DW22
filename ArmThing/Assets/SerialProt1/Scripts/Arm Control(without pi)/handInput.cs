@@ -25,18 +25,23 @@ public class handInput : MonoBehaviour
         {
             handObject.color = new Color(1, 1, 1, 1);
             hold = false;
+            hasCollided = false;
             Destroy(handPivot.GetComponent<FixedJoint2D>());
         }
 
     }//end of Update
+
+    bool hasCollided = false;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (hold) 
         {
             //make sure that the player does not grab its own pivot and gets stuck
-            if (collision.gameObject.tag != "Player")
+            if (!hasCollided)
             {
+                hasCollided = true;
+
                 Rigidbody2D rb = collision.transform.GetComponent<Rigidbody2D>();
 
                 if (rb != null)
@@ -50,10 +55,6 @@ public class handInput : MonoBehaviour
                     FixedJoint2D fj = handPivot.transform.gameObject.AddComponent(typeof(FixedJoint2D)) as FixedJoint2D;
                 }
 
-            }
-            else 
-            {
-                Debug.Log("touching player pivot " + collision.gameObject.name);
             }
 
         }
