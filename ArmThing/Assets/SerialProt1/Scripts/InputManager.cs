@@ -14,6 +14,10 @@ public class InputManager : MonoBehaviour
 
     //int nInputs;
 
+    public Transform cameraTransform;
+    public Transform playerTransform;
+
+
     private void Start()
     {
 
@@ -63,7 +67,7 @@ public class InputManager : MonoBehaviour
             //listeners[1].SendMessage("ChangeAngle", targetAngles[1]);
         }
 
-
+        cameraTransform = playerTransform;
     }
 
     void OnMessageArrived(string msg)

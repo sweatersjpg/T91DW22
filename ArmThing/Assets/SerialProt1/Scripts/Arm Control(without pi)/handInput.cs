@@ -11,6 +11,8 @@ public class handInput : MonoBehaviour
 
     public SpriteRenderer handObject;    
     public GameObject handPivot;
+    public Transform cameraTransform;
+    public Transform playerTransform;
 
 
     // Update is called once per frame
@@ -28,6 +30,9 @@ public class handInput : MonoBehaviour
             hasCollided = false;
             Destroy(handPivot.GetComponent<FixedJoint2D>());
         }
+
+        cameraTransform = playerTransform;
+
 
     }//end of Update
 
