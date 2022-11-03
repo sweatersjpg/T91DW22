@@ -4,22 +4,19 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    float[] targetAngles;
+    //float[] targetAngles;
 
     [SerializeField]
-    ArmControl[] listeners;
+    GameObject[] listeners;
 
     [SerializeField]
     float inputScale = 18;
 
-    int nInputs;
+    //int nInputs;
 
     private void Start()
     {
-        targetAngles = new float[listeners.Length];
-        for (int i = 0; i < targetAngles.Length; i++) targetAngles[i] = 0;
 
-        nInputs = listeners.Length;
     }
 
     void OnMessageArrived(string msg)
@@ -30,19 +27,19 @@ public class InputManager : MonoBehaviour
         int index = int.Parse(input[0]);
         string dir = input[1];
 
-        if (dir == "left")
+        if (dir == "l")
         {
-            targetAngles[index] += 1 * inputScale;
+            listeners[index].SendMessage("ChangeAngle", inputScale);
         }
-        else if (dir == "right")
+        else if (dir == "r")
         {
-            targetAngles[index] -= 1 * inputScale;
+            listeners[index].SendMessage("ChangeAngle", -inputScale);
+        }
+        else if (dir == "b")
+        {
+            listeners[index].SendMessage("ButtonPressed");
         }
 
-        if (targetAngles[index] > 180) targetAngles[index] -= 360;
-        if (targetAngles[index] < -180) targetAngles[index] += 360;
-
-        if (listeners[index] != null) listeners[index].SendMessage("ChangeAngle", targetAngles[index]);
     }
 
     void OnConnectionEvent(bool success)

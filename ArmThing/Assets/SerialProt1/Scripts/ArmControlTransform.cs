@@ -4,20 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
 
-public class ArmControl : MonoBehaviour
+public class ArmControlTransform : MonoBehaviour
 {
+    [SerializeField]
     float targetAngle = 0;
     float currentAngle = 0;
 
-    public bool takeParentsRotation = false;
+    [SerializeField]
+    bool takeParentsRotation = false;
 
+    //[SerializeField]
+    Transform parent;
+
+    [SerializeField]
     Rigidbody2D rb;
-    [SerializeField]
-    bool hasClaw = false;
-    AnchoredJoint2D anchor;
-
-    [SerializeField]
-    Rigidbody2D parent;
 
     //[SerializeField]
     //float torque = 1;
@@ -25,32 +25,25 @@ public class ArmControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        if(hasClaw) anchor = GetComponent<AnchoredJoint2D>();
+        //rb = GetComponent<Rigidbody2D>();
+        //hinge = GetComponent<HingeJoint2D>();
+
+        parent = transform.parent;
     }
-
-
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        float angle = (targetAngle + parent.rotation);
+        float angle = (targetAngle + transform.parent.localEulerAngles.z);
         if (!takeParentsRotation) angle = targetAngle;
 
-        Vector2 ray = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle));
-
-        Debug.DrawRay(transform.position, ray * 3);
+        //Vector2 ray = new Vector2(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle));
+        //Debug.DrawRay(transform.position, ray * 3);
 
         currentAngle += Mathf.DeltaAngle(currentAngle, angle) / 8;
 
-        //transform.localEulerAngles = new Vector3(0, 0, currentAngle);
+        transform.localEulerAngles = new Vector3(0, 0, currentAngle);
 
-        rb.MoveRotation(currentAngle);
-    }
-
-    public void ButtonPressed()
-    {
-        if (!hasClaw) return;
     }
 
     public void ChangeAngle(float deltaAngle)
@@ -59,4 +52,5 @@ public class ArmControl : MonoBehaviour
         if (targetAngle > 180) targetAngle -= 360;
         if (targetAngle < -180) targetAngle += 360;
     }
+
 }
