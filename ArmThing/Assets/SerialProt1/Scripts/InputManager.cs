@@ -45,6 +45,26 @@ public class InputManager : MonoBehaviour
 
         listeners[0].SendMessage("ChangeAngle", targetAngles[0]);
 
+        if (targetAngles[1] != null) 
+        { 
+            //up
+            if (Input.GetAxisRaw("Vertical") > 0.1f)
+            {
+                targetAngles[1] += 1;
+                Debug.Log("right");
+
+            }
+            //down
+            if (Input.GetAxisRaw("Vertical") < -0.1f)
+            {
+                targetAngles[1] -= 1;
+                Debug.Log("left");
+            }
+
+            listeners[1].SendMessage("ChangeAngle", targetAngles[1]);
+        }
+
+
     }
 
     void OnMessageArrived(string msg)
