@@ -48,11 +48,6 @@ public class ArmControl : MonoBehaviour
         rb.MoveRotation(currentAngle);
     }
 
-    public void ButtonPressed()
-    {
-        if (!hasClaw) return;
-    }
-
     public void ChangeAngle(float deltaAngle)
     {
         targetAngle += deltaAngle;

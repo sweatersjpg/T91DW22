@@ -27,38 +27,40 @@ public class InputManager : MonoBehaviour
     {
 
         //right
-        if (Input.GetAxisRaw("Horizontal") > 0.1f) 
+        if (Input.GetAxisRaw("Horizontal") > 0.1f)
         {
-            targetAngles[0] += 1;
-            Debug.Log("right");
-
+            //targetAngles[0] += 1;
+            //Debug.Log("right");
+            listeners[0].SendMessage("ChangeAngle", 1);
         }
         //left
         if (Input.GetAxisRaw("Horizontal") < -0.1f)
         {
-            targetAngles[0] -= 1; 
-            Debug.Log("left");
+            //targetAngles[0] -= 1;
+            //Debug.Log("left");
+            listeners[0].SendMessage("ChangeAngle", -1);
         }
 
-        listeners[0].SendMessage("ChangeAngle", targetAngles[0]);
+        //listeners[0].SendMessage("ChangeAngle", targetAngles[0]);
 
-        if (targetAngles[1] != null) 
-        { 
+        if (listeners[1] != null)
+        {
             //up
             if (Input.GetAxisRaw("Vertical") > 0.1f)
             {
-                targetAngles[1] += 1;
-                Debug.Log("right");
-
+                //targetAngles[1] += 1;
+                //Debug.Log("right");
+                listeners[1].SendMessage("ChangeAngle", 1);
             }
             //down
             if (Input.GetAxisRaw("Vertical") < -0.1f)
             {
-                targetAngles[1] -= 1;
-                Debug.Log("left");
+                //targetAngles[1] -= 1;
+                //Debug.Log("left");
+                listeners[1].SendMessage("ChangeAngle", -1);
             }
 
-            listeners[1].SendMessage("ChangeAngle", targetAngles[1]);
+            //listeners[1].SendMessage("ChangeAngle", targetAngles[1]);
         }
 
 
