@@ -22,6 +22,31 @@ public class InputManager : MonoBehaviour
         nInputs = listeners.Length;
     }
 
+    /// <summary>
+    /// rotation should work with manual/keyboard presses(currently just 1 player)
+    /// Comment out once arduino is in place
+    /// </summary>
+    void Update()
+    {
+
+        //right
+        if (Input.GetAxisRaw("Horizontal") > 0.1f) 
+        {
+            targetAngles[0] += 1;
+            Debug.Log("right");
+
+        }
+        //left
+        if (Input.GetAxisRaw("Horizontal") < -0.1f)
+        {
+            targetAngles[0] -= 1; 
+            Debug.Log("left");
+        }
+
+        listeners[0].SendMessage("ChangeAngle", targetAngles[0]);
+
+    }
+
     void OnMessageArrived(string msg)
     {
         //Debug.Log(msg);
