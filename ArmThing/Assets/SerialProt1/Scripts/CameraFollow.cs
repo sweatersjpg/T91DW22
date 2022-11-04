@@ -14,7 +14,7 @@ public class CameraFollow : MonoBehaviour
     bool lockX, lockY, lockZ;
 
     [SerializeField]
-    float paralax, easing;
+    float paralax = 1, easing = 8;
 
     // Start is called before the first frame update
     void Start()
