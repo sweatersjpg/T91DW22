@@ -12,9 +12,6 @@ public class ArmControl : MonoBehaviour
     public bool takeParentsRotation = false;
 
     Rigidbody2D rb;
-    [SerializeField]
-    bool hasClaw = false;
-    AnchoredJoint2D anchor;
 
     [SerializeField]
     Rigidbody2D parent;
@@ -26,10 +23,7 @@ public class ArmControl : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        if(hasClaw) anchor = GetComponent<AnchoredJoint2D>();
     }
-
-
 
     // Update is called once per frame
     void FixedUpdate()

@@ -1,62 +1,71 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class handInput : MonoBehaviour
 {
-    private bool hold;
-
     public KeyCode buttonPress;
 
-
-    public SpriteRenderer handObject;    
+    public SpriteRenderer handSprite;
     public GameObject handPivot;
 
+    [SerializeField]
+    Sprite openHand, closedHand;
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKey(buttonPress))
         {
-            handObject.color = new Color(1,0,0,1);
-            hold = true;
+            //handObject.color = new Color(1, 0, 0, 1);
+            handSprite.sprite = closedHand;
+
+            if(!hasCollided)
+            {
+                Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 0.5f, LayerMask.GetMask("Default"));
+
+                GameObject bestHit = null;
+                foreach (Collider2D hit in hits)
+                {
+                    if (hit.transform.GetComponent<Rigidbody2D>() != null) bestHit = hit.gameObject;
+                    else if (bestHit == null) bestHit = hit.gameObject;
+                }
+
+                if (bestHit != null)
+                {
+                    hasCollided = true;
+
+                    AddPivot(bestHit);
+                }
+            }
+
         }
         else
         {
-            handObject.color = new Color(1, 1, 1, 1);
-            hold = false;
+            handSprite.sprite = openHand;
             hasCollided = false;
             Destroy(handPivot.GetComponent<FixedJoint2D>());
+            handPivot.GetComponent<HingeJoint2D>().useMotor = false;
         }
-
-    }//end of Update
+    }
 
     bool hasCollided = false;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void AddPivot(GameObject collision)
     {
-        if (hold) 
+
+        Rigidbody2D rb = collision.transform.GetComponent<Rigidbody2D>();
+
+        if (rb != null)
         {
-            //make sure that the player does not grab its own pivot and gets stuck
-            if (!hasCollided)
-            {
-                hasCollided = true;
-
-                Rigidbody2D rb = collision.transform.GetComponent<Rigidbody2D>();
-
-                if (rb != null)
-                {
-                    FixedJoint2D fj = handPivot.transform.gameObject.AddComponent(typeof(FixedJoint2D)) as FixedJoint2D;
-                    fj.connectedBody = rb;
-
-                }
-                else
-                {
-                    FixedJoint2D fj = handPivot.transform.gameObject.AddComponent(typeof(FixedJoint2D)) as FixedJoint2D;
-                }
-
-            }
-
+            FixedJoint2D fj = handPivot.transform.gameObject.AddComponent(typeof(FixedJoint2D)) as FixedJoint2D;
+            fj.connectedBody = rb;
+            handPivot.GetComponent<HingeJoint2D>().useMotor = true;
+        }
+        else
+        {
+            FixedJoint2D fj = handPivot.transform.gameObject.AddComponent(typeof(FixedJoint2D)) as FixedJoint2D;
         }
 
 
